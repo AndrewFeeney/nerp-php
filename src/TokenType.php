@@ -2,11 +2,11 @@
 
 namespace Nerp;
 
-enum TokenType
+enum TokenType: string
 {
-    case BadToken;
-    case EndOfFile;
-    case Integer;
-    case Operator;
-    case Whitespace;
+    case BadToken = 'BAD_TOKEN';
+    case EndOfFile = 'END_OF_FILE';
+    case Integer = 'INTEGER';
+    case Operator = 'OPERATOR';
+    case Whitespace = 'WHITESPACE';
 }

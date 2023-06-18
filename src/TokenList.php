@@ -37,6 +37,15 @@ class TokenList
         return $this->tokens[0] ?? null;
     }
 
+    public function shift(): Token|null
+    {
+        do {
+            $next = array_shift($this->tokens);
+        } while ($next->type === TokenType::Whitespace);
+
+        return $next;
+    }
+
     private function pushWhitespace(Token $token)
     {
         $lastToken = array_pop($this->tokens);
