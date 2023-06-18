@@ -27,6 +27,18 @@ test('it_can_lex_an_empty_string', function () {
     );
 });
 
+test('it_can_lex_whitespace', function () {
+    $lexer = new Lexer();
+
+    expectTokenListsMatch(
+        new TokenList([
+            new Token(type: TokenType::Whitespace, value: null),
+            new Token(type: TokenType::EndOfFile, value: null),
+        ]),
+        $lexer->lex(' '),
+    );
+});
+
 test('it_can_lex_a_single_digit', function () {
     $lexer = new Lexer();
 

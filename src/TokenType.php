@@ -4,6 +4,7 @@ namespace Nerp;
 
 enum TokenType
 {
-    case Integer;
     case EndOfFile;
+    case Integer;
+    case Whitespace;
 }
