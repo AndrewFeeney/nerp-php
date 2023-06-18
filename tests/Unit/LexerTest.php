@@ -35,3 +35,12 @@ test('it_can_lex_a_single_digit', function () {
         new Token(type: TokenType::EndOfFile, value: null),
     ]);
 });
+
+test('it_can_lex_a_double_digit_integer', function () {
+    $lexer = new Lexer();
+
+    expect($lexer->lex('12')->toArray())->toMatchArray([
+        new Token(type: TokenType::Integer, value: '12'),
+        new Token(type: TokenType::EndOfFile, value: null),
+    ]);
+});
