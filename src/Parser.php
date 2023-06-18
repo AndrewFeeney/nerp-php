@@ -9,7 +9,7 @@ use Nerp\NodeTypes\Integer;
 
 class Parser
 {
-    public function parse(TokenList $tokenList): SyntaxNode
+    public function parse(TokenList $tokenList): ?SyntaxNode
     {
         if ($tokenList->length() === 0) {
             throw new \Exception('No nodes');
@@ -27,6 +27,9 @@ class Parser
     private function parseExpression(Token $leftHandSide, TokenList $remainingTokens): SyntaxNode
     {
         $secondToken = $remainingTokens->shift();
+        if ($secondToken->type === TokenType::EndOfFile) {
+            return $this->parseToken($leftHandSide);
+        }
 
         if (
             $leftHandSide->type === TokenType::Integer
@@ -38,10 +41,11 @@ class Parser
         throw new \Exception('Unexpected token '.$leftHandSide->type->value.' value: "'.$leftHandSide->value.'"');
     }
 
-    private function parseToken(Token $token): SyntaxNode
+    private function parseToken(Token $token): ?SyntaxNode
     {
         $syntaxNode = match($token->type) {
             TokenType::Integer => new Integer($token->value),
+            TokenType::EndOfFile => null,
             /* default => throw new \Exception("Unable to parse token: ". $token->value), */
         };
 

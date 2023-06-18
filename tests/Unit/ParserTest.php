@@ -31,10 +31,8 @@ function expectTreeMatches(SyntaxNode $expectedNode, SyntaxNode $actualNode) {
 
 test('it_can_parse_a_single_integer', function () {
     $tokenList = new TokenList([
-        new Token(
-            type: TokenType::Integer,
-            value: '123',
-        )
+        new Token(type: TokenType::Integer, value: '123'),
+        new Token(type: TokenType::EndOfFile),
     ]);
 
     $parser = new Parser();
@@ -52,6 +50,7 @@ test('it_can_parse_a_simple_add_statement', function () {
         new Token(type: TokenType::Integer, value: '1'),
         new Token(type: TokenType::Operator, value: '+'),
         new Token(type: TokenType::Integer, value: '1'),
+        new Token(type: TokenType::EndOfFile),
     ]);
 
     $parser = new Parser();
@@ -74,6 +73,7 @@ test('it_can_parse_two_connected_add_statements', function () {
         new Token(type: TokenType::Integer, value: '2'),
         new Token(type: TokenType::Operator, value: '+'),
         new Token(type: TokenType::Integer, value: '3'),
+        new Token(type: TokenType::EndOfFile),
     ]);
 
     $parser = new Parser();
@@ -97,6 +97,7 @@ test('it_can_parse_a_print_call_on_an_integer', function () {
         new Token(type: TokenType::Integer, value: '1'),
         new Token(type: TokenType::Operator, value: '->'),
         new Token(type: TokenType::Keyword, value: 'print'),
+        new Token(type: TokenType::EndOfFile),
     ]);
 
     $parser = new Parser();
