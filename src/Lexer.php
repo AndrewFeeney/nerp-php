@@ -8,21 +8,17 @@ class Lexer
     {
         $tokenList = new TokenList([]);
 
-        $chars = str_split($input);
+        $chars = empty($input) ? [] : str_split($input);
 
         foreach ($chars as $char) {
-            if ($this->isWhitespace($char)) {
-                $tokenList->push(new Token(type: TokenType::Whitespace));
-            } else {
-                if (is_numeric($char)) {
-                    $tokenList->push(
-                        new Token(
-                            type: TokenType::Integer,
-                            value: $char,
-                        )
-                    );
-                }
-            }
+            $tokenType = $this->getTokenType($char);
+            $tokenValue = $this->getTokenValue($tokenType, $char);
+            $tokenList->push(
+                new Token(
+                    type: $tokenType,
+                    value: $tokenValue,
+                )
+            );    
         }
 
         $tokenList->push(new Token(type: TokenType::EndOfFile));
@@ -42,5 +38,27 @@ class Lexer
         // If the resulting string is empty, it means the original string
         // contained only whitespace characters
         return empty($strWithoutWhitespace);
+    }
+
+    private function getTokenType(string $char): TokenType
+    {
+        if ($this->isWhitespace($char)) {
+            return TokenType::Whitespace;
+        }
+
+        if (is_numeric($char)) {
+            return TokenType::Integer;
+        }
+
+        return TokenType::BadToken;
+    }
+
+    private function getTokenValue(TokenType $type, string $char): string|null
+    {
+        return match ($type) {
+            TokenType::Whitespace => null,
+            TokenType::EndOfFile => null,
+            default => $char,
+        };
     }
 }

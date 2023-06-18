@@ -6,12 +6,12 @@ use Nerp\TokenList;
 use Nerp\TokenType;
 
 function expectTokensMatch(Token $tokenA, Token $tokenB) {
-    expect($tokenA->type)->toEqual($tokenB->type);
-    expect($tokenB->value)->toEqual($tokenB->value);
+    expect($tokenB->type)->toEqual($tokenA->type);
+    expect($tokenB->value)->toEqual($tokenA->value);
 }
 
 function expectTokenListsMatch(TokenList $tokenListA, TokenList $tokenListB) {
-    expect($tokenListA->length())->toEqual($tokenListB->length());
+    expect($tokenListB->length())->toEqual($tokenListB->length());
 
     foreach ($tokenListA->toArray() as $index => $tokenA) {
         expectTokensMatch($tokenA, $tokenListB->toArray()[$index]);
