@@ -26,20 +26,6 @@ class Lexer
         return $tokenList;
     }
 
-    public function isWhitespace(string $str): bool
-    {
-        if (mb_strlen($str) === 0) {
-            return false;
-        }
-
-        // Remove all whitespace characters from the string
-        $strWithoutWhitespace = preg_replace('/\s+/', '', $str);
-
-        // If the resulting string is empty, it means the original string
-        // contained only whitespace characters
-        return empty($strWithoutWhitespace);
-    }
-
     private function getTokenType(string $char): TokenType
     {
         if ($this->isWhitespace($char)) {
@@ -48,6 +34,10 @@ class Lexer
 
         if (is_numeric($char)) {
             return TokenType::Integer;
+        }
+
+        if ($this->isOperator($char)) {
+            return TokenType::Operator;
         }
 
         return TokenType::BadToken;
@@ -60,5 +50,24 @@ class Lexer
             TokenType::EndOfFile => null,
             default => $char,
         };
+    }
+
+    private function isOperator(string $char): bool
+    {
+        return in_array($char, ['+']);
+    }
+
+    private function isWhitespace(string $str): bool
+    {
+        if (mb_strlen($str) === 0) {
+            return false;
+        }
+
+        // Remove all whitespace characters from the string
+        $strWithoutWhitespace = preg_replace('/\s+/', '', $str);
+
+        // If the resulting string is empty, it means the original string
+        // contained only whitespace characters
+        return empty($strWithoutWhitespace);
     }
 }
