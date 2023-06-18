@@ -40,6 +40,10 @@ class Lexer
             return TokenType::Operator;
         }
 
+        if (ctype_alpha($char)) {
+            return TokenType::Keyword;
+        }
+
         return TokenType::BadToken;
     }
 

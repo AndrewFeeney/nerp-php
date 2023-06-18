@@ -28,6 +28,7 @@ class TokenList
             TokenType::Integer => $this->pushInteger($token),
             TokenType::Operator => $this->pushOperator($token),
             TokenType::Whitespace => $this->pushWhitespace($token),
+            TokenType::Keyword => $this->pushKeyword($token),
 
             default => $this->simplePush($token),
         };
@@ -50,6 +51,19 @@ class TokenList
         } while ($next->type === TokenType::Whitespace);
 
         return $next;
+    }
+
+    private function pushKeyword(Token $token)
+    {
+        $lastToken = array_pop($this->tokens);
+
+        if ($lastToken->type === TokenType::Keyword) {
+            $token = new Token(type: TokenType::Keyword, value: $lastToken->value . $token->value);
+        } else {
+            $this->simplePush($lastToken);
+        }
+
+        $this->simplePush($token); 
     }
 
     private function pushWhitespace(Token $token)
