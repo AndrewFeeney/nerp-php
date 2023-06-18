@@ -26,3 +26,19 @@ test('it_can_evaluate_a_simple_addition', function () {
 
     expect($result)->toEqual(3);
 });
+
+test('it_can_evaluate_a_nested_addition', function () {
+    $evaulator = new Evaluator();
+
+    $ast = new AddOperation(
+        new Integer(1),
+        new AddOperation(
+            new Integer(2),
+            new Integer(3),
+        )
+    );
+
+    $result = $evaulator->evaluate($ast);
+
+    expect($result)->toEqual(6);
+});
