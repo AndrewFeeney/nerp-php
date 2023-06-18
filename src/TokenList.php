@@ -22,6 +22,7 @@ class TokenList
 
         match ($token->type) {
             TokenType::Integer => $this->pushInteger($token),
+            TokenType::Whitespace => $this->pushWhitespace($token),
             default => $this->simplePush($token),
         };
     }
@@ -42,6 +43,19 @@ class TokenList
         }
 
         $this->simplePush($token);
+    }
+
+    private function pushWhitespace(Token $token)
+    {
+        $lastToken = array_pop($this->tokens);
+
+        if ($lastToken->type === TokenType::Whitespace) {
+            $token = new Token(type: TokenType::Whitespace);
+        } else {
+            $this->simplePush($lastToken);
+        }
+
+        $this->simplePush($token); 
     }
 
     public function toArray(): array
