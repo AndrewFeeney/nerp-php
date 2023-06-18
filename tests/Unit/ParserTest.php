@@ -3,6 +3,7 @@
 use Nerp\SyntaxNode;
 use Nerp\NodeTypes\Integer;
 use Nerp\NodeTypes\AddOperation;
+use Nerp\NodeTypes\FunctionCall;
 use Nerp\Parser;
 use Nerp\Token;
 use Nerp\TokenList;
@@ -86,6 +87,26 @@ test('it_can_parse_two_connected_add_statements', function () {
                 new Integer(2),
                 new Integer(3)
             )
+        ),
+        $ast
+    );
+});
+
+test('it_can_parse_a_print_call_on_an_integer', function () {
+    $tokenList = new TokenList([
+        new Token(type: TokenType::Integer, value: '1'),
+        new Token(type: TokenType::Operator, value: '->'),
+        new Token(type: TokenType::Keyword, value: 'print'),
+    ]);
+
+    $parser = new Parser();
+
+    $ast = $parser->parse($tokenList);
+
+    expectTreeMatches(
+        new FunctionCall(
+            name: 'print',
+            argument: new Integer(1)
         ),
         $ast
     );

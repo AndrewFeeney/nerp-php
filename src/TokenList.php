@@ -6,12 +6,16 @@ class TokenList
 {
     public function __construct(private array $tokens)
     {
-        
     }
 
     public function length(): int
     {
         return count($this->tokens);
+    }
+
+    public function isEmpty(): bool
+    {
+        return $this->length() === 0;
     }
 
     public function push(Token $token)

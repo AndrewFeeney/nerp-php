@@ -3,6 +3,8 @@
 namespace Nerp;
 
 use Nerp\NodeTypes\AddOperation;
+use Nerp\NodeTypes\Dictionary;
+use Nerp\NodeTypes\FunctionCall;
 use Nerp\NodeTypes\Integer;
 
 class Parser
@@ -49,8 +51,24 @@ class Parser
     private function parseOperation(Token $leftHandSide, Token $operator, TokenList $remainingTokens): SyntaxNode
     {
         return match($operator->value) {
-            '+' => new AddOperation($this->parseToken($leftHandSide), $this->parse($remainingTokens)),
-            default => throw new \Exception('Invalid operation'),
+            '+'         => new AddOperation($this->parseToken($leftHandSide), $this->parse($remainingTokens)),
+            '->'        => $this->parseFunctionCall(name: $remainingTokens->shift()->value, primaryArgument: $leftHandSide, secondaryArgument: $remainingTokens),
+            default     => throw new \Exception('Invalid operation'),
         };
+    }
+
+    private function parseFunctionCall(string $name, Token $primaryArgument, TokenList $secondaryArgument)
+    {
+        if ($secondaryArgument->isEmpty()) {
+            return new FunctionCall($name, $this->parseToken($primaryArgument));
+        }
+
+        return new FunctionCall(
+            $name,
+            new Dictionary([
+                'primaryArgument' => $primaryArgument,
+                $this->parse($secondaryArgument),
+            ])
+        );
     }
 }
