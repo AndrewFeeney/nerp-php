@@ -54,7 +54,7 @@ class Lexer
 
     private function isOperator(string $char): bool
     {
-        return in_array($char, ['+']);
+        return in_array($char, ['+', '-', '>']);
     }
 
     private function isWhitespace(string $str): bool

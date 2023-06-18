@@ -101,3 +101,11 @@ test('it_can_lex_a_simple_add_expression', function () {
         new Token(type: TokenType::EndOfFile, value: null),
     ]);
 });
+
+test('it_can_lex_an_object_operator', function () {
+    $lexer = new Lexer();
+
+    expect($lexer->lex('->')->toArray())->toMatchArray([
+        new Token(type: TokenType::Operator, value: '->'),
+    ]);
+});

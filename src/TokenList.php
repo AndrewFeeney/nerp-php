@@ -26,7 +26,9 @@ class TokenList
 
         match ($token->type) {
             TokenType::Integer => $this->pushInteger($token),
+            TokenType::Operator => $this->pushOperator($token),
             TokenType::Whitespace => $this->pushWhitespace($token),
+
             default => $this->simplePush($token),
         };
     }
@@ -61,6 +63,24 @@ class TokenList
         }
 
         $this->simplePush($token); 
+    }
+
+    private function pushOperator(Token $token)
+    {
+        $lastToken = array_pop($this->tokens);
+
+        if ($this->operatorsCanBeCombined($lastToken, $token)) {
+            $token = new Token(type: TokenType::Operator, value: $lastToken->value . $token->value);
+        } else {
+            $this->simplePush($lastToken);
+        }
+
+        $this->simplePush($token);
+    }
+
+    private function operatorsCanBeCombined(Token $a, Token $b)
+    {
+        return $a->value === '-' && $b->value === '>';
     }
 
     private function simplePush(Token $token)
