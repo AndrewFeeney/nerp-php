@@ -77,3 +77,14 @@ test('it_can_lex_a_quadruple_digit_integer', function () {
         new Token(type: TokenType::EndOfFile, value: null),
     ]);
 });
+
+test('it_can_lex_two_integers_separated_by_whitespace', function () {
+    $lexer = new Lexer();
+
+    expect($lexer->lex('123 4')->toArray())->toMatchArray([
+        new Token(type: TokenType::Integer, value: '123'),
+        new Token(type: TokenType::Whitespace, value: null),
+        new Token(type: TokenType::Integer, value: '4'),
+        new Token(type: TokenType::EndOfFile, value: null),
+    ]);
+});
