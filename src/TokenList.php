@@ -27,6 +27,29 @@ class TokenList
         };
     }
 
+    public function toArray(): array
+    {
+        return $this->tokens;
+    }
+
+    public function first(): Token|null
+    {
+        return $this->tokens[0] ?? null;
+    }
+
+    private function pushWhitespace(Token $token)
+    {
+        $lastToken = array_pop($this->tokens);
+
+        if ($lastToken->type === TokenType::Whitespace) {
+            $token = new Token(type: TokenType::Whitespace);
+        } else {
+            $this->simplePush($lastToken);
+        }
+
+        $this->simplePush($token); 
+    }
+
     private function simplePush(Token $token)
     {
         array_push($this->tokens, $token);
@@ -43,23 +66,5 @@ class TokenList
         }
 
         $this->simplePush($token);
-    }
-
-    private function pushWhitespace(Token $token)
-    {
-        $lastToken = array_pop($this->tokens);
-
-        if ($lastToken->type === TokenType::Whitespace) {
-            $token = new Token(type: TokenType::Whitespace);
-        } else {
-            $this->simplePush($lastToken);
-        }
-
-        $this->simplePush($token); 
-    }
-
-    public function toArray(): array
-    {
-        return $this->tokens;
     }
 }
