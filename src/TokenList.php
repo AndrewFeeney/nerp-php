@@ -15,7 +15,8 @@ class TokenList
 
     public function isEmpty(): bool
     {
-        return $this->length() === 0;
+        return $this->length() === 0
+            || $this->length() === 1 && $this->tokens[0]->type === TokenType::EndOfFile;
     }
 
     public function push(Token $token)

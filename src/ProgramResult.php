@@ -8,5 +8,5 @@ interface ProgramResult
 
     public function exitCode(): int;
 
-    public function standardOutput(): string;
+    public function standardOutput(): string|null;
 }

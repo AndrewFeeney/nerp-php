@@ -10,4 +10,5 @@ test('it_can_interpret_an_integer', function () {
 
     expect($programResult->wasSuccessful())->toBeTrue();
     expect($programResult->exitCode())->toBe(0);
+    expect($programResult->standardOutput())->toBe(null);
 });

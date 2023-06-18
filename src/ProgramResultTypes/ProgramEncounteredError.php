@@ -4,24 +4,25 @@ namespace Nerp\ProgramResultTypes;
 
 use Nerp\ProgramResult;
 
-class ProgramExecutedSuccessfully implements ProgramResult
+class ProgramEncounteredError implements ProgramResult
 {
-    public function __construct(private ?string $standardOutput = null)
+    public function __construct(private ?string $standardOutput = null, private ?int $exitCode)
     {
     }
 
     public function wasSuccessful(): bool
     {
-        return true;
+        return false;
     }
 
     public function exitCode(): int
     {
-        return 0;
+        return $exitCode ?? 1;
     }
 
     public function standardOutput(): string|null
     {
-        return $this->standardOutput;
+        return $this->standardOutput ?? '';
     }
 }
+

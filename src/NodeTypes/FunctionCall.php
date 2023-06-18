@@ -22,5 +22,6 @@ class FunctionCall implements SyntaxNode
 
     public function evaluate(): mixed
     {
+        return null;
     }
 }
