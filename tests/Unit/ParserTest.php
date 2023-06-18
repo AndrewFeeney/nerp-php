@@ -7,7 +7,6 @@ use Nerp\Parser;
 use Nerp\Token;
 use Nerp\TokenList;
 use Nerp\TokenType;
-use PHPUnit\Framework\ExpectationFailedException;
 
 function expectLeafNodeMatches(SyntaxNode $expectedNode, SyntaxNode $actualNode) {
     expect($actualNode->evaluate())->toEqual($expectedNode->evaluate());
@@ -62,6 +61,31 @@ test('it_can_parse_a_simple_add_statement', function () {
         new AddOperation(
             new Integer(1),
             new Integer(1),
+        ),
+        $ast
+    );
+});
+
+test('it_can_parse_two_connected_add_statements', function () {
+    $tokenList = new TokenList([
+        new Token(type: TokenType::Integer, value: '1'),
+        new Token(type: TokenType::Operator, value: '+'),
+        new Token(type: TokenType::Integer, value: '2'),
+        new Token(type: TokenType::Operator, value: '+'),
+        new Token(type: TokenType::Integer, value: '3'),
+    ]);
+
+    $parser = new Parser();
+
+    $ast = $parser->parse($tokenList);
+
+    expectTreeMatches(
+        new AddOperation(
+            new Integer(1),
+            new AddOperation(
+                new Integer(2),
+                new Integer(3)
+            )
         ),
         $ast
     );
