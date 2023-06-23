@@ -10,4 +10,5 @@ enum TokenType: string
     case Keyword = 'KEYWORD';
     case Operator = 'OPERATOR';
     case Whitespace = 'WHITESPACE';
+    case Parenthesis = 'PARENTHESIS';
 }

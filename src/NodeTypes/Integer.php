@@ -3,6 +3,7 @@
 namespace Nerp\NodeTypes;
 
 use Nerp\SyntaxNode;
+use Nerp\System;
 
 class Integer implements SyntaxNode
 {
@@ -20,7 +21,7 @@ class Integer implements SyntaxNode
         return false;
     }
 
-    public function evaluate(): mixed
+    public function evaluate(System $system): mixed
     {
         return $this->value;
     }

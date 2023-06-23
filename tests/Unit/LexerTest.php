@@ -121,9 +121,11 @@ test('it_can_lex_a_keyword_operator', function () {
 test('it_can_lex_a_print_call_on_an_integer', function () {
     $lexer = new Lexer();
 
-    expect($lexer->lex('123->print')->toArray())->toMatchArray([
+    expect($lexer->lex('123.print()')->toArray())->toMatchArray([
         new Token(type: TokenType::Integer, value: '123'),
-        new Token(type: TokenType::Operator, value: '->'),
+        new Token(type: TokenType::Operator, value: '.'),
         new Token(type: TokenType::Keyword, value: 'print'),
+        new Token(type: TokenType::Parenthesis, value: '('),
+        new Token(type: TokenType::Parenthesis, value: ')'),
     ]);
 });

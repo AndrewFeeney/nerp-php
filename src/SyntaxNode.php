@@ -8,5 +8,5 @@ interface SyntaxNode
 
     public function hasChildren(): bool;
 
-    public function evaluate(): mixed;
+    public function evaluate(System $system): mixed;
 }

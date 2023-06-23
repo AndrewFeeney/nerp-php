@@ -3,6 +3,7 @@
 namespace Nerp\NodeTypes;
 
 use Nerp\SyntaxNode;
+use Nerp\System;
 
 class AddOperation implements SyntaxNode
 {
@@ -23,8 +24,8 @@ class AddOperation implements SyntaxNode
         ];   
     }
 
-    public function evaluate(): mixed
+    public function evaluate(System $system): mixed
     {
-        return $this->leftHandSide->evaluate() + $this->rightHandSide->evaluate();
+        return $this->leftHandSide->evaluate($system) + $this->rightHandSide->evaluate($system);
     }
 }

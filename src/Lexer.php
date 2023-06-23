@@ -44,6 +44,10 @@ class Lexer
             return TokenType::Keyword;
         }
 
+        if ($this->isParenthesis($char)) {
+            return TokenType::Parenthesis;
+        }
+
         return TokenType::BadToken;
     }
 
@@ -58,7 +62,12 @@ class Lexer
 
     private function isOperator(string $char): bool
     {
-        return in_array($char, ['+', '-', '>']);
+        return in_array($char, [
+            '+',
+            '-',
+            '>',
+            '.',
+        ]);
     }
 
     private function isWhitespace(string $str): bool
@@ -73,5 +82,10 @@ class Lexer
         // If the resulting string is empty, it means the original string
         // contained only whitespace characters
         return empty($strWithoutWhitespace);
+    }
+
+    private function isParenthesis(string $str): bool
+    {
+        return in_array($str, ['(', ')']);
     }
 }

@@ -3,9 +3,8 @@
 namespace Nerp;
 
 use Nerp\NodeTypes\AddOperation;
-use Nerp\NodeTypes\Dictionary;
-use Nerp\NodeTypes\FunctionCall;
 use Nerp\NodeTypes\Integer;
+use Nerp\NodeTypes\Message;
 
 class Parser
 {
@@ -46,7 +45,7 @@ class Parser
         $syntaxNode = match($token->type) {
             TokenType::Integer => new Integer($token->value),
             TokenType::EndOfFile => null,
-            /* default => throw new \Exception("Unable to parse token: ". $token->value), */
+            default => throw new \Exception("Unable to parse token: ". $token->value),
         };
 
         return $syntaxNode;
@@ -56,23 +55,23 @@ class Parser
     {
         return match($operator->value) {
             '+'         => new AddOperation($this->parseToken($leftHandSide), $this->parse($remainingTokens)),
-            '->'        => $this->parseFunctionCall(name: $remainingTokens->shift()->value, primaryArgument: $leftHandSide, secondaryArgument: $remainingTokens),
+            '.'        => $this->parseAttribute(name: $remainingTokens->shift()->value, previousToken: $leftHandSide, remainingTokens: $remainingTokens),
             default     => throw new \Exception('Invalid operation'),
         };
     }
 
-    private function parseFunctionCall(string $name, Token $primaryArgument, TokenList $secondaryArgument)
+    private function parseAttribute(string $name, Token $previousToken, TokenList $remainingTokens)
     {
-        if ($secondaryArgument->isEmpty()) {
-            return new FunctionCall($name, $this->parseToken($primaryArgument));
+        if (
+            $remainingTokens->toArray()[0]->type === TokenType::Parenthesis
+                && $remainingTokens->toArray()[0]->value === '('
+                && $remainingTokens->toArray()[1]->type === TokenType::Parenthesis
+                && $remainingTokens->toArray()[1]->value === ')'
+        ) {
+            return new Message(
+                target: $this->parseToken($previousToken),
+                name: $name,
+            );
         }
-
-        return new FunctionCall(
-            $name,
-            new Dictionary([
-                'primaryArgument' => $primaryArgument,
-                $this->parse($secondaryArgument),
-            ])
-        );
     }
 }

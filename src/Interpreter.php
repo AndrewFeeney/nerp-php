@@ -12,12 +12,14 @@ class Interpreter
 
         $abstractSyntaxTree = (new Parser())->parse($tokenList);
 
+        $system = new System();
+
         try {
-            $result = (new Evaluator())->evaluate($abstractSyntaxTree);
+            $result = (new Evaluator($system))->evaluate($abstractSyntaxTree);
         } catch (\Exception $e) {
             return new ProgramEncounteredError($e);
         }
 
-        return new ProgramExecutedSuccessfully();
+        return new ProgramExecutedSuccessfully($system->standardOutput());
     }
 }

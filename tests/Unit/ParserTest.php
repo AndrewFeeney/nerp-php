@@ -4,13 +4,17 @@ use Nerp\SyntaxNode;
 use Nerp\NodeTypes\Integer;
 use Nerp\NodeTypes\AddOperation;
 use Nerp\NodeTypes\FunctionCall;
+use Nerp\NodeTypes\Message;
 use Nerp\Parser;
+use Nerp\System;
 use Nerp\Token;
 use Nerp\TokenList;
 use Nerp\TokenType;
 
 function expectLeafNodeMatches(SyntaxNode $expectedNode, SyntaxNode $actualNode) {
-    expect($actualNode->evaluate())->toEqual($expectedNode->evaluate());
+    $system = new System();
+
+    expect($actualNode->evaluate($system))->toEqual($expectedNode->evaluate($system));
     expect(get_class($actualNode))->toEqual(get_class($expectedNode));
     expect($actualNode->hasChildren())->toEqual($expectedNode->hasChildren());
 }
@@ -95,8 +99,10 @@ test('it_can_parse_two_connected_add_statements', function () {
 test('it_can_parse_a_print_call_on_an_integer', function () {
     $tokenList = new TokenList([
         new Token(type: TokenType::Integer, value: '1'),
-        new Token(type: TokenType::Operator, value: '->'),
+        new Token(type: TokenType::Operator, value: '.'),
         new Token(type: TokenType::Keyword, value: 'print'),
+        new Token(type: TokenType::Parenthesis, value: '('),
+        new Token(type: TokenType::Parenthesis, value: ')'),
         new Token(type: TokenType::EndOfFile),
     ]);
 
@@ -105,9 +111,9 @@ test('it_can_parse_a_print_call_on_an_integer', function () {
     $ast = $parser->parse($tokenList);
 
     expectTreeMatches(
-        new FunctionCall(
+        new Message(
             name: 'print',
-            argument: new Integer(1)
+            target: new Integer(1)
         ),
         $ast
     );
