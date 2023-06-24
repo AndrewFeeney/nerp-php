@@ -2,6 +2,7 @@
 
 namespace Nerp;
 
+use Nerp\ProgramResultTypes\ProgramEncounteredError;
 use Nerp\ProgramResultTypes\ProgramExecutedSuccessfully;
 
 class Interpreter
@@ -17,7 +18,7 @@ class Interpreter
         try {
             $result = (new Evaluator($system))->evaluate($abstractSyntaxTree);
         } catch (\Exception $e) {
-            return new ProgramEncounteredError($e);
+            return new ProgramEncounteredError(null, $e->getMessage(), 1);
         }
 
         return new ProgramExecutedSuccessfully($system->standardOutput());

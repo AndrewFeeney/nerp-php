@@ -5,6 +5,7 @@ namespace Nerp;
 use Nerp\NodeTypes\AddOperation;
 use Nerp\NodeTypes\Integer;
 use Nerp\NodeTypes\Message;
+use Nerp\NodeTypes\Variable;
 
 class Parser
 {
@@ -31,8 +32,10 @@ class Parser
         }
 
         if (
-            $leftHandSide->type === TokenType::Integer
-            && $secondToken->type === TokenType::Operator
+            in_array($leftHandSide->type, [
+                TokenType::Integer,
+                TokenType::Keyword,
+            ]) && $secondToken->type === TokenType::Operator
         ) {
             return $this->parseOperation($leftHandSide, $secondToken, $remainingTokens);
         }
@@ -44,6 +47,7 @@ class Parser
     {
         $syntaxNode = match($token->type) {
             TokenType::Integer => new Integer($token->value),
+            TokenType::Keyword => new Variable($token->value),
             TokenType::EndOfFile => null,
             default => throw new \Exception("Unable to parse token: ". $token->value),
         };
@@ -62,6 +66,7 @@ class Parser
 
     private function parseAttribute(string $name, Token $previousToken, TokenList $remainingTokens)
     {
+        // Method call with no argument
         if (
             $remainingTokens->toArray()[0]->type === TokenType::Parenthesis
                 && $remainingTokens->toArray()[0]->value === '('
@@ -73,5 +78,22 @@ class Parser
                 name: $name,
             );
         }
+
+        // Method call with argument
+        if (
+            $remainingTokens->toArray()[0]->type === TokenType::Parenthesis
+                && $remainingTokens->toArray()[0]->value === '('
+                && $remainingTokens->toArray()[1]->type === TokenType::Integer
+                && $remainingTokens->toArray()[2]->type === TokenType::Parenthesis
+                && $remainingTokens->toArray()[2]->value === ')'
+        ) {
+            return new Message(
+                target: $this->parseToken($previousToken),
+                argument: $this->parseToken($remainingTokens->toArray()[1]),
+                name: $name,
+            );
+        }
+
+        throw new \Exception("Unable to parse attribute: \"$name\"");
     }
 }

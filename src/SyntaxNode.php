@@ -2,6 +2,8 @@
 
 namespace Nerp;
 
+use Nerp\NodeTypes\Message;
+
 interface SyntaxNode
 {
     public function children(): array;

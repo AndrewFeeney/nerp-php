@@ -6,7 +6,10 @@ use Nerp\ProgramResult;
 
 class ProgramExecutedSuccessfully implements ProgramResult
 {
-    public function __construct(private ?string $standardOutput = null)
+    public function __construct(
+        private ?string $standardOutput = null,
+        private ?string $errorOutput = null
+    )
     {
     }
 
@@ -23,5 +26,10 @@ class ProgramExecutedSuccessfully implements ProgramResult
     public function standardOutput(): string|null
     {
         return $this->standardOutput;
+    }
+
+    public function errorOutput(): ?string
+    {
+        return $this->errorOutput;
     }
 }

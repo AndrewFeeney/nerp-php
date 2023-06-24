@@ -5,6 +5,7 @@ use Nerp\NodeTypes\Integer;
 use Nerp\NodeTypes\AddOperation;
 use Nerp\NodeTypes\FunctionCall;
 use Nerp\NodeTypes\Message;
+use Nerp\NodeTypes\Variable;
 use Nerp\Parser;
 use Nerp\System;
 use Nerp\Token;
@@ -96,12 +97,13 @@ test('it_can_parse_two_connected_add_statements', function () {
     );
 });
 
-test('it_can_parse_a_print_call_on_an_integer', function () {
+test('it_can_parse_a_system_print_call_with_an_integer_as_a_parameter', function () {
     $tokenList = new TokenList([
-        new Token(type: TokenType::Integer, value: '1'),
+        new Token(type: TokenType::Keyword, value: '$system'),
         new Token(type: TokenType::Operator, value: '.'),
         new Token(type: TokenType::Keyword, value: 'print'),
         new Token(type: TokenType::Parenthesis, value: '('),
+        new Token(type: TokenType::Integer, value: '1'),
         new Token(type: TokenType::Parenthesis, value: ')'),
         new Token(type: TokenType::EndOfFile),
     ]);
@@ -113,7 +115,8 @@ test('it_can_parse_a_print_call_on_an_integer', function () {
     expectTreeMatches(
         new Message(
             name: 'print',
-            target: new Integer(1)
+            target: new Variable('$system'),
+            argument: new Integer(1),
         ),
         $ast
     );

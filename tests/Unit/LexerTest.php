@@ -118,14 +118,15 @@ test('it_can_lex_a_keyword_operator', function () {
     ]);
 });
 
-test('it_can_lex_a_print_call_on_an_integer', function () {
+test('it_can_lex_a_system_print_call_with_an_integer_as_a_parameter', function () {
     $lexer = new Lexer();
 
-    expect($lexer->lex('123.print()')->toArray())->toMatchArray([
-        new Token(type: TokenType::Integer, value: '123'),
+    expect($lexer->lex('$system.print(123)')->toArray())->toMatchArray([
+        new Token(type: TokenType::Keyword, value: '$system'),
         new Token(type: TokenType::Operator, value: '.'),
         new Token(type: TokenType::Keyword, value: 'print'),
         new Token(type: TokenType::Parenthesis, value: '('),
+        new Token(type: TokenType::Integer, value: '123'),
         new Token(type: TokenType::Parenthesis, value: ')'),
     ]);
 });

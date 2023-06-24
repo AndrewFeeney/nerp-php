@@ -2,12 +2,17 @@
 
 namespace Nerp\NodeTypes;
 
+use Nerp\Messageable;
 use Nerp\SyntaxNode;
 use Nerp\System;
 
 class Message implements SyntaxNode
 {
-    public function __construct(private string $name, private SyntaxNode $target)
+    public function __construct(
+        private string $name,
+        private SyntaxNode $target,
+        private SyntaxNode|null $argument = null
+    )
     {
     }
 
@@ -23,10 +28,20 @@ class Message implements SyntaxNode
 
     public function evaluate(System $system): mixed
     {
-        if ($this->name === 'print') {
-            $system->print($this->target->evaluate($system));
+        if ($this->target instanceof Messageable) {
+            return $this->target->sendMessage($system, $this);
         }
 
-        return null;
+        throw new \Exception('Cannot send message to target of type: '.get_class($this->target));
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function argument(): SyntaxNode|null
+    {
+        return $this->argument;
     }
 }

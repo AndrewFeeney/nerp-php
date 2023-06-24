@@ -40,7 +40,7 @@ class Lexer
             return TokenType::Operator;
         }
 
-        if (ctype_alpha($char)) {
+        if (ctype_alpha($char) || $char === '$') {
             return TokenType::Keyword;
         }
 
