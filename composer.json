@@ -1,5 +1,5 @@
 {
-    "name": "studio/nerp_php",
+    "name": "andrewfeeney/nerp_php",
     "autoload": {
         "psr-4": {
             "Nerp\\": "src/"
