@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerp\NodeTypes;
+namespace Nerp\SyntaxNodeTypes;
 
 use Nerp\Messageable;
 use Nerp\SyntaxNode;

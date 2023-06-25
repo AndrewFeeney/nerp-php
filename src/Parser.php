@@ -2,10 +2,10 @@
 
 namespace Nerp;
 
-use Nerp\NodeTypes\AddOperation;
-use Nerp\NodeTypes\Integer;
-use Nerp\NodeTypes\Message;
-use Nerp\NodeTypes\Variable;
+use Nerp\SyntaxNodeTypes\AddOperation;
+use Nerp\SyntaxNodeTypes\Integer;
+use Nerp\SyntaxNodeTypes\Message;
+use Nerp\SyntaxNodeTypes\Variable;
 
 class Parser
 {

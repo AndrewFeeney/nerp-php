@@ -1,8 +1,8 @@
 <?php
 
-use Nerp\NodeTypes\Integer;
+use Nerp\SyntaxNodeTypes\Integer;
 use Nerp\Evaluator;
-use Nerp\NodeTypes\AddOperation;
+use Nerp\SyntaxNodeTypes\AddOperation;
 use Nerp\System;
 
 test('it_can_evaluate_an_integer', function () {

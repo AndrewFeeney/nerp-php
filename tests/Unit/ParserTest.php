@@ -1,11 +1,11 @@
 <?php
 
 use Nerp\SyntaxNode;
-use Nerp\NodeTypes\Integer;
-use Nerp\NodeTypes\AddOperation;
-use Nerp\NodeTypes\FunctionCall;
-use Nerp\NodeTypes\Message;
-use Nerp\NodeTypes\Variable;
+use Nerp\SyntaxNodeTypes\Integer;
+use Nerp\SyntaxNodeTypes\AddOperation;
+use Nerp\SyntaxNodeTypes\FunctionCall;
+use Nerp\SyntaxNodeTypes\Message;
+use Nerp\SyntaxNodeTypes\Variable;
 use Nerp\Parser;
 use Nerp\System;
 use Nerp\Token;

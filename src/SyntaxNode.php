@@ -2,7 +2,7 @@
 
 namespace Nerp;
 
-use Nerp\NodeTypes\Message;
+use Nerp\SyntaxNodeTypes\Message;
 
 interface SyntaxNode
 {
