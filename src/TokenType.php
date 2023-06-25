@@ -2,13 +2,11 @@
 
 namespace Nerp;
 
-enum TokenType: string
+interface TokenType
 {
-    case BadToken = 'BAD_TOKEN';
-    case EndOfFile = 'END_OF_FILE';
-    case Integer = 'INTEGER';
-    case Keyword = 'KEYWORD';
-    case Operator = 'OPERATOR';
-    case Whitespace = 'WHITESPACE';
-    case Parenthesis = 'PARENTHESIS';
+    public function name(): string;
+
+    public function matches(string $input): bool;
+
+    public function value(string $input): string;
 }

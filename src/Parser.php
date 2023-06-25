@@ -6,6 +6,11 @@ use Nerp\SyntaxNodeTypes\AddOperation;
 use Nerp\SyntaxNodeTypes\Integer;
 use Nerp\SyntaxNodeTypes\Message;
 use Nerp\SyntaxNodeTypes\Variable;
+use Nerp\TokenTypes\EndOfFile;
+use Nerp\TokenTypes\Parenthesis;
+use Nerp\TokenTypes\Integer as IntegerTokenType;
+use Nerp\TokenTypes\Keyword;
+use Nerp\TokenTypes\Operator;
 
 class Parser
 {
@@ -27,28 +32,28 @@ class Parser
     private function parseExpression(Token $leftHandSide, TokenList $remainingTokens): SyntaxNode
     {
         $secondToken = $remainingTokens->shift();
-        if ($secondToken->type === TokenType::EndOfFile) {
+        if (get_class($secondToken->type) === EndOfFile::class) {
             return $this->parseToken($leftHandSide);
         }
 
         if (
-            in_array($leftHandSide->type, [
-                TokenType::Integer,
-                TokenType::Keyword,
-            ]) && $secondToken->type === TokenType::Operator
+            in_array(get_class($leftHandSide->type), [
+                IntegerTokenType::class,
+                Keyword::class,
+            ]) && get_class($secondToken->type) === Operator::class
         ) {
             return $this->parseOperation($leftHandSide, $secondToken, $remainingTokens);
         }
 
-        throw new \Exception('Unexpected token '.$leftHandSide->type->value.' value: "'.$leftHandSide->value.'"');
+        throw new \Exception('Unexpected token '.$leftHandSide->type->name().' with value: "'.$leftHandSide->value.'"');
     }
 
     private function parseToken(Token $token): ?SyntaxNode
     {
-        $syntaxNode = match($token->type) {
-            TokenType::Integer => new Integer($token->value),
-            TokenType::Keyword => new Variable($token->value),
-            TokenType::EndOfFile => null,
+        $syntaxNode = match(get_class($token->type)) {
+            IntegerTokenType::class => new Integer($token->value),
+            Keyword::class => new Variable($token->value),
+            EndOfFile::class => null,
             default => throw new \Exception("Unable to parse token: ". $token->value),
         };
 
@@ -68,9 +73,9 @@ class Parser
     {
         // Method call with no argument
         if (
-            $remainingTokens->toArray()[0]->type === TokenType::Parenthesis
+            get_class($remainingTokens->toArray()[0]->type) === Parenthesis::class
                 && $remainingTokens->toArray()[0]->value === '('
-                && $remainingTokens->toArray()[1]->type === TokenType::Parenthesis
+                && get_class($remainingTokens->toArray()[1]->type) === Parenthesis::class
                 && $remainingTokens->toArray()[1]->value === ')'
         ) {
             return new Message(
@@ -81,10 +86,10 @@ class Parser
 
         // Method call with argument
         if (
-            $remainingTokens->toArray()[0]->type === TokenType::Parenthesis
+            get_class($remainingTokens->toArray()[0]->type) === Parenthesis::class
                 && $remainingTokens->toArray()[0]->value === '('
-                && $remainingTokens->toArray()[1]->type === TokenType::Integer
-                && $remainingTokens->toArray()[2]->type === TokenType::Parenthesis
+                && get_class($remainingTokens->toArray()[1]->type) === IntegerTokenType::class
+                && get_class($remainingTokens->toArray()[2]->type) === Parenthesis::class
                 && $remainingTokens->toArray()[2]->value === ')'
         ) {
             return new Message(

@@ -10,7 +10,11 @@ use Nerp\Parser;
 use Nerp\System;
 use Nerp\Token;
 use Nerp\TokenList;
-use Nerp\TokenType;
+use Nerp\TokenTypes\EndOfFile;
+use Nerp\TokenTypes\Keyword;
+use Nerp\TokenTypes\Operator;
+use Nerp\TokenTypes\Integer as IntegerTokenType;
+use Nerp\TokenTypes\Parenthesis;
 
 function expectLeafNodeMatches(SyntaxNode $expectedNode, SyntaxNode $actualNode) {
     $system = new System();
@@ -36,8 +40,8 @@ function expectTreeMatches(SyntaxNode $expectedNode, SyntaxNode $actualNode) {
 
 test('it_can_parse_a_single_integer', function () {
     $tokenList = new TokenList([
-        new Token(type: TokenType::Integer, value: '123'),
-        new Token(type: TokenType::EndOfFile),
+        new Token(type: new IntegerTokenType(), value: '123'),
+        new Token(type: new EndOfFile()),
     ]);
 
     $parser = new Parser();
@@ -52,10 +56,10 @@ test('it_can_parse_a_single_integer', function () {
 
 test('it_can_parse_a_simple_add_statement', function () {
     $tokenList = new TokenList([
-        new Token(type: TokenType::Integer, value: '1'),
-        new Token(type: TokenType::Operator, value: '+'),
-        new Token(type: TokenType::Integer, value: '1'),
-        new Token(type: TokenType::EndOfFile),
+        new Token(type: new IntegerTokenType(), value: '1'),
+        new Token(type: new Operator(), value: '+'),
+        new Token(type: new IntegerTokenType(), value: '1'),
+        new Token(type: new EndOfFile()),
     ]);
 
     $parser = new Parser();
@@ -73,12 +77,12 @@ test('it_can_parse_a_simple_add_statement', function () {
 
 test('it_can_parse_two_connected_add_statements', function () {
     $tokenList = new TokenList([
-        new Token(type: TokenType::Integer, value: '1'),
-        new Token(type: TokenType::Operator, value: '+'),
-        new Token(type: TokenType::Integer, value: '2'),
-        new Token(type: TokenType::Operator, value: '+'),
-        new Token(type: TokenType::Integer, value: '3'),
-        new Token(type: TokenType::EndOfFile),
+        new Token(type: new IntegerTokenType(), value: '1'),
+        new Token(type: new Operator(), value: '+'),
+        new Token(type: new IntegerTokenType(), value: '2'),
+        new Token(type: new Operator(), value: '+'),
+        new Token(type: new IntegerTokenType(), value: '3'),
+        new Token(type: new EndOfFile()),
     ]);
 
     $parser = new Parser();
@@ -99,13 +103,13 @@ test('it_can_parse_two_connected_add_statements', function () {
 
 test('it_can_parse_a_system_print_call_with_an_integer_as_a_parameter', function () {
     $tokenList = new TokenList([
-        new Token(type: TokenType::Keyword, value: '$system'),
-        new Token(type: TokenType::Operator, value: '.'),
-        new Token(type: TokenType::Keyword, value: 'print'),
-        new Token(type: TokenType::Parenthesis, value: '('),
-        new Token(type: TokenType::Integer, value: '1'),
-        new Token(type: TokenType::Parenthesis, value: ')'),
-        new Token(type: TokenType::EndOfFile),
+        new Token(type: new Keyword(), value: '$system'),
+        new Token(type: new Operator(), value: '.'),
+        new Token(type: new Keyword(), value: 'print'),
+        new Token(type: new Parenthesis(), value: '('),
+        new Token(type: new IntegerTokenType(), value: '1'),
+        new Token(type: new Parenthesis(), value: ')'),
+        new Token(type: new EndOfFile()),
     ]);
 
     $parser = new Parser();
