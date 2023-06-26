@@ -4,16 +4,16 @@ namespace Nerp\TokenTypes;
 
 use Nerp\TokenType;
 
-class Parenthesis implements TokenType
+class ParenthesesClose implements TokenType
 {
     public function name(): string
     {
-        return 'Parenthesis';
+        return 'Close Parentheses';
     }
 
     public function matches(string $input): bool
     {
-        return preg_match('/[()]/', $input);
+        return $input === ')';
     }
 
     public function value(string $input): string

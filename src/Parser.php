@@ -7,7 +7,8 @@ use Nerp\SyntaxNodeTypes\Integer;
 use Nerp\SyntaxNodeTypes\Message;
 use Nerp\SyntaxNodeTypes\Variable;
 use Nerp\TokenTypes\EndOfFile;
-use Nerp\TokenTypes\Parenthesis;
+use Nerp\TokenTypes\ParenthesesOpen;
+use Nerp\TokenTypes\ParenthesesClose;
 use Nerp\TokenTypes\Integer as IntegerTokenType;
 use Nerp\TokenTypes\Identifier;
 use Nerp\TokenTypes\Operator;
@@ -73,10 +74,8 @@ class Parser
     {
         // Method call with no argument
         if (
-            get_class($remainingTokens->toArray()[0]->type) === Parenthesis::class
-                && $remainingTokens->toArray()[0]->value === '('
-                && get_class($remainingTokens->toArray()[1]->type) === Parenthesis::class
-                && $remainingTokens->toArray()[1]->value === ')'
+            get_class($remainingTokens->toArray()[0]->type) === ParenthesesOpen::class
+                && get_class($remainingTokens->toArray()[1]->type) === ParenthesesClose::class
         ) {
             return new Message(
                 target: $this->parseToken($previousToken),
@@ -86,11 +85,9 @@ class Parser
 
         // Method call with argument
         if (
-            get_class($remainingTokens->toArray()[0]->type) === Parenthesis::class
-                && $remainingTokens->toArray()[0]->value === '('
+            get_class($remainingTokens->toArray()[0]->type) === ParenthesesOpen::class
                 && get_class($remainingTokens->toArray()[1]->type) === IntegerTokenType::class
-                && get_class($remainingTokens->toArray()[2]->type) === Parenthesis::class
-                && $remainingTokens->toArray()[2]->value === ')'
+                && get_class($remainingTokens->toArray()[2]->type) === ParenthesesClose::class
         ) {
             return new Message(
                 target: $this->parseToken($previousToken),

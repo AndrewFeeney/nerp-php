@@ -14,7 +14,8 @@ use Nerp\TokenTypes\EndOfFile;
 use Nerp\TokenTypes\Identifier;
 use Nerp\TokenTypes\Operator;
 use Nerp\TokenTypes\Integer as IntegerTokenType;
-use Nerp\TokenTypes\Parenthesis;
+use Nerp\TokenTypes\ParenthesesOpen;
+use Nerp\TokenTypes\ParenthesesClose;
 
 function expectLeafNodeMatches(SyntaxNode $expectedNode, SyntaxNode $actualNode) {
     $system = new System();
@@ -106,9 +107,9 @@ test('it_can_parse_a_system_print_call_with_an_integer_as_a_parameter', function
         new Token(type: new Identifier(), value: '$system'),
         new Token(type: new Operator(), value: '.'),
         new Token(type: new Identifier(), value: 'print'),
-        new Token(type: new Parenthesis(), value: '('),
+        new Token(type: new ParenthesesOpen(), value: '('),
         new Token(type: new IntegerTokenType(), value: '1'),
-        new Token(type: new Parenthesis(), value: ')'),
+        new Token(type: new ParenthesesClose(), value: ')'),
         new Token(type: new EndOfFile()),
     ]);
 

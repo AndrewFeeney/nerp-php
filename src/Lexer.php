@@ -7,7 +7,8 @@ use Nerp\TokenTypes\EndOfFile;
 use Nerp\TokenTypes\Integer;
 use Nerp\TokenTypes\Identifier;
 use Nerp\TokenTypes\Operator;
-use Nerp\TokenTypes\Parenthesis;
+use Nerp\TokenTypes\ParenthesesOpen;
+use Nerp\TokenTypes\ParenthesesClose;
 use Nerp\TokenTypes\Whitespace;
 
 class Lexer
@@ -40,7 +41,8 @@ class Lexer
             Integer::class,
             Operator::class,
             Identifier::class,
-            Parenthesis::class,
+            ParenthesesOpen::class,
+            ParenthesesClose::class,
         ] as $tokenTypeClass) {
             $tokenType = new $tokenTypeClass();
 

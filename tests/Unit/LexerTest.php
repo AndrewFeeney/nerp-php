@@ -8,7 +8,8 @@ use Nerp\TokenTypes\EndOfFile;
 use Nerp\TokenTypes\Integer;
 use Nerp\TokenTypes\Identifier;
 use Nerp\TokenTypes\Operator;
-use Nerp\TokenTypes\Parenthesis;
+use Nerp\TokenTypes\ParenthesesOpen;
+use Nerp\TokenTypes\ParenthesesClose;
 use Nerp\TokenTypes\Whitespace;
 
 function expectTokensMatch(Token $tokenA, Token $tokenB) {
@@ -144,9 +145,9 @@ test('it_can_lex_a_system_print_call_with_an_integer_as_a_parameter', function (
             new Token(type: new Identifier(), value: '$system'),
             new Token(type: new Operator(), value: '.'),
             new Token(type: new Identifier(), value: 'print'),
-            new Token(type: new Parenthesis(), value: '('),
+            new Token(type: new ParenthesesOpen(), value: '('),
             new Token(type: new Integer(), value: '123'),
-            new Token(type: new Parenthesis(), value: ')'),
+            new Token(type: new ParenthesesClose(), value: ')'),
             new Token(type: new EndOfFile(), value: null),
         ])),
         $lexer->lex('$system.print(123)')
