@@ -6,7 +6,7 @@ use Nerp\TokenList;
 use Nerp\TokenType;
 use Nerp\TokenTypes\EndOfFile;
 use Nerp\TokenTypes\Integer;
-use Nerp\TokenTypes\Keyword;
+use Nerp\TokenTypes\Identifier;
 use Nerp\TokenTypes\Operator;
 use Nerp\TokenTypes\Parenthesis;
 use Nerp\TokenTypes\Whitespace;
@@ -124,12 +124,16 @@ test('it_can_lex_an_object_operator', function () {
     ]);
 });
 
-test('it_can_lex_a_keyword_operator', function () {
+test('it_can_lex_an_identifier_token', function () {
     $lexer = new Lexer();
 
-    expect($lexer->lex('print')->toArray())->toMatchArray([
-        new Token(type: new Keyword(), value: 'print'),
-    ]);
+    expectTokenListsMatch(
+        new TokenList([
+            new Token(type: new Identifier(), value: 'print'),
+            new Token(type: new EndOfFile(), value: null),
+        ]),
+        $lexer->lex('print')
+    );
 });
 
 test('it_can_lex_a_system_print_call_with_an_integer_as_a_parameter', function () {
@@ -137,9 +141,9 @@ test('it_can_lex_a_system_print_call_with_an_integer_as_a_parameter', function (
 
     expectTokenListsMatch(
         (new TokenList([
-            new Token(type: new Keyword(), value: '$system'),
+            new Token(type: new Identifier(), value: '$system'),
             new Token(type: new Operator(), value: '.'),
-            new Token(type: new Keyword(), value: 'print'),
+            new Token(type: new Identifier(), value: 'print'),
             new Token(type: new Parenthesis(), value: '('),
             new Token(type: new Integer(), value: '123'),
             new Token(type: new Parenthesis(), value: ')'),

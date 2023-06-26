@@ -4,11 +4,11 @@ namespace Nerp\TokenTypes;
 
 use Nerp\TokenType;
 
-class Keyword implements TokenType
+class Identifier implements TokenType
 {
     public function name(): string
     {
-        return 'Keyword';
+        return 'Identifier';
     }
 
     public function matches(string $input): bool

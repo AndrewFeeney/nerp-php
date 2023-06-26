@@ -9,7 +9,7 @@ use Nerp\SyntaxNodeTypes\Variable;
 use Nerp\TokenTypes\EndOfFile;
 use Nerp\TokenTypes\Parenthesis;
 use Nerp\TokenTypes\Integer as IntegerTokenType;
-use Nerp\TokenTypes\Keyword;
+use Nerp\TokenTypes\Identifier;
 use Nerp\TokenTypes\Operator;
 
 class Parser
@@ -39,7 +39,7 @@ class Parser
         if (
             in_array(get_class($leftHandSide->type), [
                 IntegerTokenType::class,
-                Keyword::class,
+                Identifier::class,
             ]) && get_class($secondToken->type) === Operator::class
         ) {
             return $this->parseOperation($leftHandSide, $secondToken, $remainingTokens);
@@ -52,7 +52,7 @@ class Parser
     {
         $syntaxNode = match(get_class($token->type)) {
             IntegerTokenType::class => new Integer($token->value),
-            Keyword::class => new Variable($token->value),
+            Identifier::class => new Variable($token->value),
             EndOfFile::class => null,
             default => throw new \Exception("Unable to parse token: ". $token->value),
         };

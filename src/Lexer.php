@@ -5,7 +5,7 @@ namespace Nerp;
 use Nerp\TokenTypes\BadToken;
 use Nerp\TokenTypes\EndOfFile;
 use Nerp\TokenTypes\Integer;
-use Nerp\TokenTypes\Keyword;
+use Nerp\TokenTypes\Identifier;
 use Nerp\TokenTypes\Operator;
 use Nerp\TokenTypes\Parenthesis;
 use Nerp\TokenTypes\Whitespace;
@@ -39,7 +39,7 @@ class Lexer
             Whitespace::class,
             Integer::class,
             Operator::class,
-            Keyword::class,
+            Identifier::class,
             Parenthesis::class,
         ] as $tokenTypeClass) {
             $tokenType = new $tokenTypeClass();

@@ -11,7 +11,7 @@ use Nerp\System;
 use Nerp\Token;
 use Nerp\TokenList;
 use Nerp\TokenTypes\EndOfFile;
-use Nerp\TokenTypes\Keyword;
+use Nerp\TokenTypes\Identifier;
 use Nerp\TokenTypes\Operator;
 use Nerp\TokenTypes\Integer as IntegerTokenType;
 use Nerp\TokenTypes\Parenthesis;
@@ -103,9 +103,9 @@ test('it_can_parse_two_connected_add_statements', function () {
 
 test('it_can_parse_a_system_print_call_with_an_integer_as_a_parameter', function () {
     $tokenList = new TokenList([
-        new Token(type: new Keyword(), value: '$system'),
+        new Token(type: new Identifier(), value: '$system'),
         new Token(type: new Operator(), value: '.'),
-        new Token(type: new Keyword(), value: 'print'),
+        new Token(type: new Identifier(), value: 'print'),
         new Token(type: new Parenthesis(), value: '('),
         new Token(type: new IntegerTokenType(), value: '1'),
         new Token(type: new Parenthesis(), value: ')'),
