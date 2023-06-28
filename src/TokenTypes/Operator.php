@@ -13,7 +13,7 @@ class Operator implements TokenType
 
     public function matches(string $input): bool
     {
-        return preg_match('/[+.]/', $input);
+        return preg_match('/[+-.]/', $input);
     }
 
     public function value(string $input): string

@@ -5,6 +5,7 @@ namespace Nerp;
 use Nerp\SyntaxNodeTypes\AddOperation;
 use Nerp\SyntaxNodeTypes\Integer;
 use Nerp\SyntaxNodeTypes\Message;
+use Nerp\SyntaxNodeTypes\SubtractOperation;
 use Nerp\SyntaxNodeTypes\Variable;
 use Nerp\TokenTypes\EndOfFile;
 use Nerp\TokenTypes\ParenthesesOpen;
@@ -65,6 +66,7 @@ class Parser
     {
         return match($operator->value) {
             '+'         => new AddOperation($this->parseToken($leftHandSide), $this->parse($remainingTokens)),
+            '-'         => new SubtractOperation($this->parseToken($leftHandSide), $this->parse($remainingTokens)),
             '.'        => $this->parseAttribute(name: $remainingTokens->shift()->value, previousToken: $leftHandSide, remainingTokens: $remainingTokens),
             default     => throw new \Exception('Invalid operation'),
         };

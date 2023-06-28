@@ -117,6 +117,19 @@ test('it_can_lex_a_simple_add_expression', function () {
     ]);
 });
 
+test('it_can_lex_a_simple_subtract_expression', function () {
+    $lexer = new Lexer();
+
+    expect($lexer->lex('123 - 4')->toArray())->toMatchArray([
+        new Token(type: new Integer(), value: '123'),
+        new Token(type: new Whitespace(), value: ' '),
+        new Token(type: new Operator(), value: '-'),
+        new Token(type: new Whitespace(), value: ' '),
+        new Token(type: new Integer(), value: '4'),
+        new Token(type: new EndOfFile(), value: null),
+    ]);
+});
+
 test('it_can_lex_an_object_operator', function () {
     $lexer = new Lexer();
 

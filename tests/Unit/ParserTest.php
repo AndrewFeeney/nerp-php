@@ -3,7 +3,7 @@
 use Nerp\SyntaxNode;
 use Nerp\SyntaxNodeTypes\Integer;
 use Nerp\SyntaxNodeTypes\AddOperation;
-use Nerp\SyntaxNodeTypes\FunctionCall;
+use Nerp\SyntaxNodeTypes\SubtractOperation;
 use Nerp\SyntaxNodeTypes\Message;
 use Nerp\SyntaxNodeTypes\Variable;
 use Nerp\Parser;
@@ -69,6 +69,27 @@ test('it_can_parse_a_simple_add_statement', function () {
 
     expectTreeMatches(
         new AddOperation(
+            new Integer(1),
+            new Integer(1),
+        ),
+        $ast
+    );
+});
+
+test('it_can_parse_a_simple_subtraction_expression', function () {
+    $tokenList = new TokenList([
+        new Token(type: new IntegerTokenType(), value: '1'),
+        new Token(type: new Operator(), value: '-'),
+        new Token(type: new IntegerTokenType(), value: '1'),
+        new Token(type: new EndOfFile()),
+    ]);
+
+    $parser = new Parser();
+
+    $ast = $parser->parse($tokenList);
+
+    expectTreeMatches(
+        new SubtractOperation(
             new Integer(1),
             new Integer(1),
         ),

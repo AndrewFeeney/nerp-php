@@ -3,6 +3,7 @@
 use Nerp\SyntaxNodeTypes\Integer;
 use Nerp\Evaluator;
 use Nerp\SyntaxNodeTypes\AddOperation;
+use Nerp\SyntaxNodeTypes\SubtractOperation;
 use Nerp\System;
 
 test('it_can_evaluate_an_integer', function () {
@@ -42,4 +43,20 @@ test('it_can_evaluate_a_nested_addition', function () {
     $result = $evaluator->evaluate($ast);
 
     expect($result)->toEqual(6);
+});
+
+test('it_can_evaluate_a_nested_subtraction', function () {
+    $evaluator = new Evaluator(new System());
+
+    $ast = new SubtractOperation(
+        new Integer(3),
+        new SubtractOperation(
+            new Integer(2),
+            new Integer(1),
+        )
+    );
+
+    $result = $evaluator->evaluate($ast);
+
+    expect($result)->toEqual(2);
 });
